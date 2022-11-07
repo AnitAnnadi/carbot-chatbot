@@ -124,7 +124,6 @@ public class Magpie4
 
 		if (carGame == true) {
 			int randInteger = (int)(Math.random() * randomQuestions.size());
-			System.out.println(randInteger);
 			int index = 0;
 			if (firstResponse) {
 				response = randomQuestions.get(randInteger);
