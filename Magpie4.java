@@ -18,7 +18,6 @@ import java.util.Random;
 
 public class Magpie4
 {
-	boolean carGame = false;
     int question = 0;
 	boolean firstResponse = true;
 	List<String> randomQuestions = new ArrayList<String>(Arrays.asList("What is the best-selling car of all time?", "What country consumes the most gas every year?", "What kind of car is associated with James Bond?", "What is the most popular color for a car?", "Who designed what is considered the world’s first automobile?", "What is the van in the popular cartoon show “Scooby-Doo” named?", "What was the most stolen car in America in 2022?", "The Ultimate Driving Machine” is the slogan for which car company?", "What car was the first to be mass-produced?", "What is the world’s largest automotive company?", "What is the smallest car ever made?"));
@@ -47,7 +46,7 @@ public class Magpie4
 	 * @return a response based on the rules given
 	 */
 
-	String category = "";
+	boolean carGame = false;
 	Boolean introduction = false;
 	Boolean closure = false;
 	Boolean randQuestion = false;
