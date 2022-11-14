@@ -32,7 +32,11 @@ public class Magpie4
 	 */	
 	public String getGreeting()
 	{
-		return "Hello, my name is CarBot. I love cars!";
+		if (introduction = true) {
+			return "Hello, my name is CarBot. I love cars!";
+		} else {
+			return "";
+		}
 	}
 	
 	/**
@@ -42,9 +46,34 @@ public class Magpie4
 	 *            the user statement
 	 * @return a response based on the rules given
 	 */
+
+	String category = "";
+	Boolean introduction = false;
+	Boolean closure = false;
+	Boolean randQuestion = false;
+
 	public String getResponse(String statement)
 	{
 
+		switch(statement)  {
+			case "hello":
+				introduction = true;
+			case "game":
+				carGame = true;
+				break;
+			case "bored":
+				carGame = true;
+				break;
+			case "question":
+				randQuestion = true;
+				break;
+			case "bye":
+				closure = true;
+				break;
+			case "":
+				carGame = true;
+				break;
+		}
 		String response = "";
 		
 		if (carGame == false) {
@@ -156,6 +185,11 @@ public class Magpie4
 			index = randomQuestions.indexOf(randomQuestions.get(randInteger));
 		    randomQuestions.remove(index);
 		}
+		}
+
+		if(closure == true) {
+			response = "Bye! Thanks for talking with me!";
+			closure = false;
 		}
 
 		return response;
@@ -284,7 +318,8 @@ public class Magpie4
 		int whichResponse = (int)(r * NUMBER_OF_RESPONSES);
 		String response = "";
 		
-		if (whichResponse == 0)
+		if (randQuestion) {
+			if (whichResponse == 0)
 		{
 			response = "Interesting. " + randomQuestions2[0];
 		}
@@ -300,8 +335,11 @@ public class Magpie4
 		{
 			response = "You don't say." + randomQuestions2[3];
 		}
+		randQuestion = false;
+		}
 
 		return response;
 	}
 
 }
+
