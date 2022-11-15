@@ -18,6 +18,7 @@ import java.util.Random;
 
 public class Magpie4
 {
+	boolean carGame = false;
     int question = 0;
 	boolean firstResponse = true;
 	List<String> randomQuestions = new ArrayList<String>(Arrays.asList("What is the best-selling car of all time?", "What country consumes the most gas every year?", "What kind of car is associated with James Bond?", "What is the most popular color for a car?", "Who designed what is considered the world’s first automobile?", "What is the van in the popular cartoon show “Scooby-Doo” named?", "What was the most stolen car in America in 2022?", "The Ultimate Driving Machine” is the slogan for which car company?", "What car was the first to be mass-produced?", "What is the world’s largest automotive company?", "What is the smallest car ever made?"));
@@ -25,17 +26,16 @@ public class Magpie4
 	String [] randomQuestions2 = {"What is your favorite car?", "What car does your family own?", "Whats the best looking car you have seen?", "What color is your car?"};
 	int score = 0;
 
+			int randInteger = (int)(Math.random() * randomQuestions.size());
+				int index = 0;
+
 	/**
 	 * Get a default greeting 	
 	 * @return a greeting
 	 */	
 	public String getGreeting()
 	{
-		if (introduction = true) {
 			return "Hello, my name is CarBot. I love cars!";
-		} else {
-			return "";
-		}
 	}
 	
 	/**
@@ -46,50 +46,75 @@ public class Magpie4
 	 * @return a response based on the rules given
 	 */
 
-	boolean carGame = false;
-	Boolean introduction = false;
-	Boolean closure = false;
-	Boolean randQuestion = false;
-
 	public String getResponse(String statement)
 	{
-
-		switch(statement)  {
-			case "hello":
-				introduction = true;
-			case "game":
-				carGame = true;
-				break;
-			case "bored":
-				carGame = true;
-				break;
-			case "question":
-				randQuestion = true;
-				break;
-			case "bye":
-				closure = true;
-				break;
-			case "":
-				carGame = true;
-				break;
-		}
 		String response = "";
-		
+		int theState = getCase(statement);
+
+		switch (theState) {
+			case 1:
+				response = "You seem bored. Lets play a car game! I ask you trivia questions and you answer them.";
+				System.out.println(response);
+				carGame = true;
+			case 2:
+				response = "My favorite car is the Toyota Highlander.";
+			case 3:
+				response = "My favorite car is the Toyota Highlander.";
+			case 4:
+				response = "I love that color on cars!";
+			case 5:
+				response = "Any car except Toyota are the opps. I am loyal to Toyota.";
+			case 6:
+				response = "Yah I like those cars. They are really cool.";
+			case 7:
+				response = "Why so negative?";
+			case 8:
+				response = "Why so negative?";
+			case 9:
+				response = transformIWantToStatement(statement);
+			case 10:
+				response = transformYouMeStatement(statement);
+			case 11:
+				response = getRandomResponse();
+			case 12:
+				response = randomQuestions.get(randInteger);
+				firstResponse = false;
+				index = randomQuestions.indexOf(randomQuestions.get(randInteger));
+		    	randomQuestions.remove(index);
+			case 13:
+				response = "Game is over. You got " + score + "/10 right good job!";
+				carGame = false;
+
+			case 14:
+				response = "Correct! " + randomQuestions.get(randInteger);
+				score += 1;
+				index = randomQuestions.indexOf(randomQuestions.get(randInteger));
+		    	randomQuestions.remove(index);
+			case 15:
+				response = "Wrong! Try this question: "  + randomQuestions.get(randInteger);
+				index = randomQuestions.indexOf(randomQuestions.get(randInteger));
+		    	randomQuestions.remove(index);
+
+
+		}
+
+		return response;
+	}
+
+	public int getCase(String statement) {
 		if (carGame == false) {
 			if (statement.length() == 0)
 		{
-			response = "You seem bored. Lets play a car game! I ask you trivia questions and you answer them.";
-			System.out.println(response);
-			carGame = true;
+			return 1;
 		}
 
 		else if(findKeyword(statement, "favorite car") >= 0) {
-			response = "My favorite car is the Toyota Highlander.";
+			return 2;
 		}
 		
 
 		else if(findKeyword(statement, "favorite car") >= 0) {
-			response = "My favorite car is the Toyota Highlander.";
+			return 3;
 		}
 
 		else if (findKeyword(statement, "blue") >= 0
@@ -97,7 +122,7 @@ public class Magpie4
 				|| findKeyword(statement, "red") >= 0
 				|| findKeyword(statement, "white") >= 0)
 		{
-			response = "I love that color on cars!";
+			return 4;
 		}
 
 		else if (findKeyword(statement, "honda") >= 0
@@ -105,7 +130,7 @@ public class Magpie4
 				|| findKeyword(statement, "bmw") >= 0
 				|| findKeyword(statement, "acura") >= 0)
 		{
-			response = "Any car except Toyota are the opps. I am loyal to Toyota.";
+			return 5;
 		}
 
 		else if (findKeyword(statement, "cadillac") >= 0
@@ -113,23 +138,23 @@ public class Magpie4
 				|| findKeyword(statement, "lamborghini") >= 0
 				|| findKeyword(statement, "ferrari") >= 0)
 		{
-			response = "Yah I like those cars. They are really cool.";
+			return 6;
 		}
 
 		else if (findKeyword(statement, "no") >= 0)
 		{
-			response = "Why so negative?";
+			return 7;
 		}
 
 		else if (findKeyword(statement, "no") >= 0)
 		{
-			response = "Why so negative?";
+			return 8;
 		}
 
 		// Responses which require transformations
 		else if (findKeyword(statement, "I want to", 0) >= 0)
 		{
-			response = transformIWantToStatement(statement);
+			return 9;
 		}
 
 		else
@@ -141,25 +166,21 @@ public class Magpie4
 			if (psn >= 0
 					&& findKeyword(statement, "me", psn) >= 0)
 			{
-				response = transformYouMeStatement(statement);
+				return 10;
 			}
 			else
 			{
-				response = getRandomResponse();
+				return 11;
 			}
 		}
 		}
 
-		if (carGame == true) {
-			int randInteger = (int)(Math.random() * randomQuestions.size());
-			int index = 0;
+		if (carGame = true) {
 			if (firstResponse) {
-				response = randomQuestions.get(randInteger);
-				firstResponse = false;
+				return 12;
 			}
 			else if (randomQuestions.size() <= 1) {
-				response = "Game is over. You got " + score + "/10 right good job!";
-				carGame = false;
+				return 13;
 		}
 
 			else if (findKeyword(statement, "volkswagon") >= 0
@@ -174,24 +195,14 @@ public class Magpie4
 				|| findKeyword(statement, "toyota") >= 0
 				|| findKeyword(statement, "mercedes") >= 0)
 		{
-			response = "Correct! " + randomQuestions.get(randInteger);
-			score += 1;
-			index = randomQuestions.indexOf(randomQuestions.get(randInteger));
-		    randomQuestions.remove(index);
+			return 14;
 		}
 		else {
-			response = "Wrong! Try this question: "  + randomQuestions.get(randInteger);
-			index = randomQuestions.indexOf(randomQuestions.get(randInteger));
-		    randomQuestions.remove(index);
+			return 15;
 		}
 		}
 
-		if(closure == true) {
-			response = "Bye! Thanks for talking with me!";
-			closure = false;
-		}
-
-		return response;
+		return 11;
 	}
 	
 	/**
@@ -317,7 +328,6 @@ public class Magpie4
 		int whichResponse = (int)(r * NUMBER_OF_RESPONSES);
 		String response = "";
 		
-		if (randQuestion) {
 			if (whichResponse == 0)
 		{
 			response = "Interesting. " + randomQuestions2[0];
@@ -334,11 +344,8 @@ public class Magpie4
 		{
 			response = "You don't say." + randomQuestions2[3];
 		}
-		randQuestion = false;
-		}
 
 		return response;
 	}
 
 }
-
